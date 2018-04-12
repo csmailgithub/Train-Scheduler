@@ -33,8 +33,8 @@ $("#add-train-btn").on("click", function(event) {
     event.preventDefault();
   
     // Grabs user input
-    var trainName = $("#employee-name-input").val().trim();
-    var trainDestination = $("#role-input").val().trim();
+    var trainName = $("#train-name-input").val().trim();
+    var trainDestination = $("#destination-input").val().trim();
     var firstTrain = moment($("#start-input").val().trim(), "HH:mm").format("X");
     var trainFreq = $("#rate-input").val().trim();
   
@@ -46,7 +46,7 @@ $("#add-train-btn").on("click", function(event) {
       rate: trainFreq
     };
   
-    // Uploads employee data to the database
+    // Uploads train data to the database
     database.ref().push(newTrain);
   
     // Logs everything to console
@@ -59,11 +59,24 @@ $("#add-train-btn").on("click", function(event) {
     alert("Train added to the schedule!");
   
     // Clears all of the text-boxes
-    $("#employee-name-input").val("");
-    $("#role-input").val("");
+    $("#train-name-input").val("");
+    $("#destination-input").val("");
     $("#start-input").val("");
     $("#rate-input").val("");
   });
+
+  function timeUpdater() {
+    database.ref().child('trains').once('value', function(snapshot){
+      snapshot.forEach(function(childSnapshot){
+        fbTime = moment().format('X');
+        dataRef.ref('trains/' + childSnapshot.key).update({
+        currentTime: fbTime,
+        })
+      })    
+    });
+  };
+ 
+  setInterval(timeUpdater, 10000);
 
   database.ref().on("child_added", function(childSnapshot, prevChildKey) {
 
@@ -75,26 +88,23 @@ $("#add-train-btn").on("click", function(event) {
     var firstTrain = childSnapshot.val().start;
     var trainFreq = childSnapshot.val().rate;
   
-    // Employee Info
+    // console log the newtrain Info
     console.log(trainName);
     console.log(trainDestination);
     console.log(firstTrain);
     console.log(trainFreq);
   
-    // Prettify the employee start
-    var firstTrainPretty = moment.unix(firstTrain).format("MM/DD/YY");
+    // Prettify the "First train table column" start
+    var firstTrainPretty = moment.unix(firstTrain).format("HH:mm");
   
-    // Calculate the months worked using hardcore math
-    // To calculate the months worked
-    var empMonths = moment().diff(moment.unix(firstTrain, "X"), "months");
+    // Calculate minutes to next arrival
+    var nextArrival = moment().diff(moment.unix(firstTrain, "X"), "minutes");
     console.log(empMonths);
   
-    // Calculate the total billed rate
-    // var empBilled = empMonths * trainFreq;
-    // console.log(empBilled);
+   
   
     // Add each train's data into the table
     $("#employee-table > tbody").append("<tr><td>" + trainName + "</td><td>" + trainDestination + "</td><td>" +
-    firstTrainPretty + "</td><td>" + empMonths + "</td><td>" + trainFreq + "</td><td>");
+    firstTrainPretty + "</td><td>" + nextArrival + "</td><td>" + trainFreq + "</td><td>");
   });
 });
