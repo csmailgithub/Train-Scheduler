@@ -1,3 +1,5 @@
+$(document).ready(function(){
+
 
 var config = {
     apiKey: "AIzaSyDz5nqWcWSnKPtAKMxiETxdkmMgbNpitAY",
@@ -6,7 +8,7 @@ var config = {
     projectId: "trainschedule-4fe05",
     storageBucket: "trainschedule-4fe05.appspot.com",
     messagingSenderId: "799313740898"
-}
+};
 
 firebase.initializeApp(config);
 
@@ -36,7 +38,7 @@ $("#add-train-btn").on("click", function(event) {
     var firstTrain = moment($("#start-input").val().trim(), "DD/MM/YY").format("X");
     var trainFreq = $("#rate-input").val().trim();
   
-    // Creates local "temporary" object for holding employee data
+    // Creates local "temporary" object for holding train data 
     var newTrain = {
       name: trainName,
       role: trainDestination,
@@ -95,4 +97,4 @@ $("#add-train-btn").on("click", function(event) {
     $("#employee-table > tbody").append("<tr><td>" + trainName + "</td><td>" + trainDestination + "</td><td>" +
     firstTrainPretty + "</td><td>" + empMonths + "</td><td>" + trainFreq + "</td><td>" + empBilled + "</td></tr>");
   });
-  
+});
