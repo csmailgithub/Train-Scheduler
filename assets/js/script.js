@@ -35,7 +35,7 @@ $("#add-train-btn").on("click", function(event) {
     // Grabs user input
     var trainName = $("#employee-name-input").val().trim();
     var trainDestination = $("#role-input").val().trim();
-    var firstTrain = moment($("#start-input").val().trim(), "DD/MM/YY").format("X");
+    var firstTrain = moment($("#start-input").val().trim(), "HH:mm").format("X");
     var trainFreq = $("#rate-input").val().trim();
   
     // Creates local "temporary" object for holding train data 
@@ -95,6 +95,6 @@ $("#add-train-btn").on("click", function(event) {
   
     // Add each train's data into the table
     $("#employee-table > tbody").append("<tr><td>" + trainName + "</td><td>" + trainDestination + "</td><td>" +
-    firstTrainPretty + "</td><td>" + empMonths + "</td><td>" + trainFreq + "</td><td>" + empBilled + "</td></tr>");
+    firstTrainPretty + "</td><td>" + empMonths + "</td><td>" + trainFreq + "</td><td>");
   });
 });
