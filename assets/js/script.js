@@ -99,7 +99,7 @@ $("#add-train-btn").on("click", function(event) {
   
     // Calculate minutes to next arrival
     var nextArrival = moment().diff(moment.unix(firstTrain, "X"), "minutes");
-    console.log(empMonths);
+    console.log(trainFreq);
   
    
   
